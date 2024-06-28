@@ -8,7 +8,7 @@ export const RecipeList = () => {
   const [query, setQuery] = useQueryParams({
     page: NumberParam,
   })
-  const page = query.page ?? 0
+  const page = query.page ?? 1
   const { data: recipeList } = useRecipeList({
     _page: page,
   })
@@ -16,15 +16,25 @@ export const RecipeList = () => {
   if (!recipeList) return null
 
   return (
-    <div className="flex h-full flex-col gap-4 bg-stone-100 p-6">
+    <div className="flex h-full flex-col gap-4 p-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2  xl:grid-cols-3">
         {recipeList.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
       <div className="flex justify-between">
-        <Button onClick={() => setQuery({ page: page - 1 })}>Prev</Button>
-        <Button onClick={() => setQuery({ page: page + 1 })}>Next</Button>
+        <Button
+          onClick={() => setQuery({ page: page - 1 })}
+          disabled={page === 1}
+        >
+          Prev
+        </Button>
+        <Button
+          onClick={() => setQuery({ page: page + 1 })}
+          disabled={recipeList.length < 10}
+        >
+          Next
+        </Button>
       </div>
     </div>
   )
