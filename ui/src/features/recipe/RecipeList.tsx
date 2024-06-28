@@ -1,29 +1,36 @@
-import { AsyncView } from '@/components/async-view'
+import { NumberParam, useQueryParams } from 'use-query-params'
+import { Button } from '../../components/button'
 import { cn } from '../../utils'
 import { useRecipeList } from './recipe.queries'
 import { Recipe } from './recipe.types'
 
 export const RecipeList = () => {
-  const recipeListQuery = useRecipeList({})
+  const [query, setQuery] = useQueryParams({
+    page: NumberParam,
+  })
+  const page = query.page ?? 0
+  const { data: recipeList } = useRecipeList({
+    _page: page,
+  })
+
+  if (!recipeList) return null
 
   return (
-    <div className="bg-stone-100 p-6">
+    <div className="flex h-full flex-col gap-4 bg-stone-100 p-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2  xl:grid-cols-3">
-        <AsyncView
-          query={recipeListQuery}
-          onPending={<div>Loading...</div>}
-          onSuccess={(recipeList) =>
-            recipeList.map((recipe) => (
-              <ReciperCard key={recipe.id} recipe={recipe} />
-            ))
-          }
-        />
+        {recipeList.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
+        ))}
+      </div>
+      <div className="flex justify-between">
+        <Button onClick={() => setQuery({ page: page - 1 })}>Prev</Button>
+        <Button onClick={() => setQuery({ page: page + 1 })}>Next</Button>
       </div>
     </div>
   )
 }
 
-const ReciperCard = ({ recipe }: { recipe: Recipe }) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
     <div className="@container h-full min-w-64">
       <div className="@xs:flex-row @sm:p-5 flex h-full flex-col items-center gap-4 rounded-2xl border border-stone-300 bg-white p-4 shadow-md">

@@ -16,7 +16,7 @@ const getRecipeList = async ({ _expand, ...params }: RecipeListRequest) => {
 
 export const useRecipeList = ({
   _page = 0,
-  _limit = 50,
+  _limit = 10,
   ...filter
 }: RecipeListRequest) =>
   useQuery({
