@@ -1,9 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { RecipeList } from '../features/recipe/RecipeList'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Navigate to="list" replace />,
+  },
+  {
+    path: 'list',
+    element: <RecipeList />,
   },
 ])
