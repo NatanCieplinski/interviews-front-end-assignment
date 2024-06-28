@@ -7,7 +7,7 @@ export const RecipeList = () => {
   const recipeListQuery = useRecipeList({})
 
   return (
-    <div className="p-6">
+    <div className="bg-stone-100 p-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2  xl:grid-cols-3">
         <AsyncView
           query={recipeListQuery}
@@ -26,8 +26,8 @@ export const RecipeList = () => {
 const ReciperCard = ({ recipe }: { recipe: Recipe }) => {
   return (
     <div className="@container h-full min-w-64">
-      <div className="@xs:flex-row @sm:p-5 flex h-full flex-col items-center gap-4 rounded-2xl border border-stone-300 p-4 shadow-xl">
-        <div className="@sm:size-32 @sm:min-w-32 @xs:size-24 @xs:min-w-24 flex size-40 w-full min-w-40 items-center justify-center overflow-hidden rounded-xl">
+      <div className="@xs:flex-row @sm:p-5 flex h-full flex-col items-center gap-4 rounded-2xl border border-stone-300 bg-white p-4 shadow-md">
+        <div className="@sm:size-32 @sm:min-w-32 @xs:size-24 @xs:min-w-24 flex size-40 w-full min-w-40 items-center justify-center overflow-hidden rounded-xl border border-stone-300">
           <img
             src={`http://localhost:8080${recipe.image}`}
             alt={recipe.name}
@@ -66,6 +66,18 @@ const difficultyColors: { [key: string]: string } = {
   Hard: 'bg-red-300',
 }
 
+const difficultyShadows: { [key: string]: string } = {
+  Easy: 'shadow-green-300',
+  Medium: 'shadow-yellow-300',
+  Hard: 'shadow-red-300',
+}
+
+const difficultyBorder: { [key: string]: string } = {
+  Easy: 'border-green-200',
+  Medium: 'border-yellow-200',
+  Hard: 'border-red-200',
+}
+
 const DifficultyBadge = ({
   difficulty,
 }: {
@@ -74,7 +86,9 @@ const DifficultyBadge = ({
   return (
     <div
       className={cn(
-        'w-16 rounded-full px-2 py-1 text-center text-xs font-semibold',
+        'w-16 rounded-full border px-2 py-1 text-center text-xs font-semibold shadow-sm',
+        difficultyBorder[difficulty],
+        difficultyShadows[difficulty],
         difficultyColors[difficulty] ?? 'bg-gray-500'
       )}
     >
