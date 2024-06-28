@@ -7,6 +7,18 @@ export type Recipe = {
   dietId: string
   difficultyId: string
   image: string
+  cuisine: {
+    id: string
+    name: string
+  }
+  diet: {
+    id: string
+    name: string
+  }
+  difficulty: {
+    id: string
+    name: string
+  }
 }
 
 export type RecipeListResponse = Recipe[]

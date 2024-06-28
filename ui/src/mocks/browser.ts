@@ -3,7 +3,7 @@ import { setupWorker } from 'msw/browser'
 
 const handlers = [
   http.get(`*`, async () => {
-    await delay(3000)
+    await delay(1000)
     return passthrough()
   }),
 ]

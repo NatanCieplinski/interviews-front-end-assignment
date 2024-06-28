@@ -4,12 +4,12 @@ import { axiosInstance } from '../../config/axios'
 import { flatObjToSerializableUrlParams } from '../../utils'
 import { RecipeListRequest, RecipeListResponse } from './recipe.types'
 
-const getRecipeList = async (params: RecipeListRequest) => {
+const getRecipeList = async ({ _expand, ...params }: RecipeListRequest) => {
   const response = await axiosInstance.get<
     unknown,
     AxiosResponse<RecipeListResponse>
   >(
-    `/recipes?${new URLSearchParams(flatObjToSerializableUrlParams(params)).toString()}`
+    `/recipes?${new URLSearchParams(flatObjToSerializableUrlParams(params)).toString()}&_expand=${_expand?.join('&_expand=')}`
   )
   return response.data
 }
@@ -25,6 +25,7 @@ export const useRecipeList = ({
       getRecipeList({
         _page,
         _limit,
+        _expand: ['cuisine', 'difficulty', 'diet'],
         ...filter,
       }),
   })
