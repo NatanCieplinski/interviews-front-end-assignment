@@ -1,7 +1,7 @@
 <!---
 Hi! We're happy you opened this file, not everyone does!
-To let us know you did, paste a capybara picture 
-in the How to Run section 😊 
+To let us know you did, paste a capybara picture
+in the How to Run section 😊
 These will be extra points for you!
 -->
 
@@ -29,11 +29,11 @@ written out. Please, write there instructions on how to run your code: we will u
 
 Your work will be assessed according to several criteria. As an example, these include:
 
-* Code quality
-* Design Patterns
-* Project Structure
-* Work quality (commits, branches, workflow, tests, ...)
-* Provided Documentation
+- Code quality
+- Design Patterns
+- Project Structure
+- Work quality (commits, branches, workflow, tests, ...)
+- Provided Documentation
 
 #### A Friendly Reminder:
 
@@ -62,7 +62,7 @@ fewer constraints as possible on your work. We appreciate if you could record an
 together with any questions that you will ask in a real-world scenario. If you want to choose our stack instead, we
 generally work with TypeScript and React.
 
----   
+---
 
 ### Problem Domain
 
@@ -94,10 +94,54 @@ Design a form that allows users to add new recipes by providing details such as 
 instructions, cuisine type, and dietary preference and an image.
 
 ### Challenge #4: Recipe Details and Comments
+
 Develop a recipe details page where users can view the full recipe, including ingredients, instructions, and user
 comments. Enable users to add comments and rate the recipe, displaying the average rating and updating the list of
 comments.
 
 ## How to run
 
-...
+Install both server and ui dependencies:
+
+```
+npm run install:all
+```
+
+Start both server and ui:
+
+```
+npm run start:all
+```
+
+![Here's your capibara](./capibara.jpeg)
+
+## Solution
+
+### Assumptions and decisions
+
+1. The project was started as an SPA for brevity reasons. In a real world scenario it would be necessary to ask if indexing and first load time are important to the target audience. For the sake of the project we assume they aren't.
+2. Some entity as the difficulty are treated as an actual entity, while in a real world scenario they would probably be implemented as a enum, making the API call to fetch them superfluous.
+3. React query is used to manage data fetching, but for the sake of simplicity the components don't visibly handle the loading and error states.
+4. While calling the API to fetch the recipe list the `expand` property is hardcoded to simulate what would be done with a GraphQL api
+5. In filtering the search component hasn't been debounced for the sake of simplicity
+6. The file upload component is not generic, also for the sake of simplicity
+7. The `/recipes` post endpoint on the server was edited, as the JSON schema said the `ingredients` property was an array of string, while the actual code treated it as a string to then split on the server. The endpoint has been changed to make it conform to the API spec.
+
+### Project Architecture
+
+The React application is structured as follows:
+
+```
+- src
+  - components
+  - config
+  - utils
+  - features
+    - entity
+      - components
+      - hooks
+      - api
+      - types
+```
+
+The folder `src/components` contains all the components that are used globally in the application, while each entity has its own folder with its own components to share between pages (list/edit/create).
