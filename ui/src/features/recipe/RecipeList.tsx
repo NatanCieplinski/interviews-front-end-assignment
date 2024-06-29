@@ -3,6 +3,7 @@ import { Combobox } from '@/components/combobox'
 import { Input } from '@/components/input'
 import { Label } from '@/components/label'
 import * as ToggleGroup from '@radix-ui/react-toggle-group'
+import { Link } from 'react-router-dom'
 import { DifficultyBadge } from './components/DifficultyBadge'
 import { RecipeCard } from './components/RecipeCard'
 import { useRecipeListPaginationAndFilters } from './recipe.hooks'
@@ -61,6 +62,9 @@ export const RecipeList = () => {
             </div>
             <Button onClick={() => clearFilters()}>Clear all</Button>
           </div>
+          <Button asChild variant="destructive">
+            <Link to="/new">New Recipe</Link>
+          </Button>
         </div>
       </div>
 

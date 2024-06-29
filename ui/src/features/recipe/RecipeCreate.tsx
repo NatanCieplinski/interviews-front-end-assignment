@@ -1,3 +1,4 @@
+import { Button } from '@/components/button'
 import {
   Form,
   FormControl,
@@ -11,7 +12,9 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { FileUploader } from '../../components/file-uploader'
 import { Input } from '../../components/input'
+import { Textarea } from '../../components/textarea'
 import {
   CuisineSelector,
   DietSelector,
@@ -26,6 +29,7 @@ const recipeCreateSchema = z.object({
   cuisineId: z.string(),
   dietId: z.string(),
   difficultyId: z.string(),
+  image: z.instanceof(File).optional(),
 })
 
 type CreateFormValues = z.infer<typeof recipeCreateSchema>
@@ -47,7 +51,16 @@ export const RecipeCreate = () => {
   const mutation = useRecipeCreateMutation()
 
   const onSubmit = async (data: CreateFormValues) => {
-    mutation.mutate(data, {
+    const formData = new FormData()
+    Object.entries(data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((v) => formData.append(key, v))
+      } else {
+        formData.append(key, value)
+      }
+    })
+
+    mutation.mutate(formData, {
       onSuccess: () => {
         toast.success('Recipe created successfully')
         navigate('/list')
@@ -60,7 +73,10 @@ export const RecipeCreate = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex size-full flex-col gap-5 overflow-scroll bg-stone-100 p-6"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -81,7 +97,7 @@ export const RecipeCreate = () => {
             <FormItem>
               <FormLabel>Instructions</FormLabel>
               <FormControl>
-                <Input id="name" {...field} />
+                <Textarea id="name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,6 +148,20 @@ export const RecipeCreate = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <FileUploader onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Create</Button>
       </form>
     </Form>
   )

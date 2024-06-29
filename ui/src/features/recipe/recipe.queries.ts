@@ -7,7 +7,6 @@ import {
   CuisineListResponse,
   DietListResponse,
   DifficultyListResponse,
-  RecipeCreateRequest,
   RecipeListRequest,
   RecipeListResponse,
 } from './recipe.types'
@@ -80,8 +79,12 @@ export const useDietList = () =>
     queryFn: () => getDietList(),
   })
 
-const createRecipe = async (data: RecipeCreateRequest) => {
-  const response = await axiosInstance.post('/recipes', data)
+const createRecipe = async (data: FormData) => {
+  const response = await axiosInstance.post('/recipes', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
   return response.data
 }
 
