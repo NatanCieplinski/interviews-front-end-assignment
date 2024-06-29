@@ -60,7 +60,9 @@ export const RecipeList = () => {
                 setDietId={(value) => setFilter('dietId', value)}
               />
             </div>
-            <Button onClick={() => clearFilters()}>Clear all</Button>
+            <Button variant="outline" onClick={() => clearFilters()}>
+              Clear filters
+            </Button>
           </div>
           <Button asChild variant="destructive">
             <Link to="/new">New Recipe</Link>

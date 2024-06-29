@@ -38,7 +38,6 @@ export const FileUploader = ({
         </div>
       ) : (
         <div className="size-full">
-          <h4>Files</h4>
           {files.map((file) => (
             <div
               key={file.name}
